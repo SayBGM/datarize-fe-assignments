@@ -1,6 +1,6 @@
-import { getCustomerPurchases, getCustomers } from '@/remotes/customer'
+import { getCustomerPurchases, getCustomers } from '@/domains/customer/api'
 import { createQueryKeys } from '@lukemorales/query-key-factory'
-import { GetCustomersParams } from '@/remotes/customer'
+import type { GetCustomersParams } from '@/domains/customer/api'
 
 export const customerQueryKey = createQueryKeys('customer', {
   listWithParams: (params: GetCustomersParams) => ({

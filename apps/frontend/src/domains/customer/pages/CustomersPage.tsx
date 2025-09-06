@@ -1,17 +1,23 @@
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { customerQueryKey } from '@/queryKey/customer'
+import { customerQueryKey } from '@/domains/customer/queryKeys'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowDown, ArrowUp } from 'lucide-react'
-import { useState } from 'react'
-import { useCustomerPurchasesSheet } from './hooks/useCustomerPurchasesSheet'
+import { useMemo, useState } from 'react'
+import { useCustomerPurchasesSheet } from '@/domains/customer/hooks/useCustomerPurchasesSheet'
+import { useDebounce } from '@/lib/useDebounce'
+
+const DEBOUNCE_MS = 300
 
 export default function CustomersPage() {
   const [keyword, setKeyword] = useState('')
   const [sortBy, setSortBy] = useState<'asc' | 'desc'>('desc')
+  const debouncedKeyword = useDebounce(keyword, DEBOUNCE_MS)
   const openCustomerPurchasesSheet = useCustomerPurchasesSheet()
 
-  const { data, isLoading, isError } = useQuery(customerQueryKey.listWithParams({ name: keyword, sortBy }))
+  const loweredKeyword = useMemo(() => debouncedKeyword.trim().toLowerCase(), [debouncedKeyword])
+
+  const { data, isLoading, isError } = useQuery(customerQueryKey.listWithParams({ name: debouncedKeyword, sortBy }))
 
   return (
     <section className="w-full">
@@ -45,7 +51,7 @@ export default function CustomersPage() {
           </TableHeader>
           <TableBody>
             {data
-              .filter((customer) => customer.name.toLowerCase().includes(keyword))
+              .filter((customer) => customer.name.toLowerCase().includes(loweredKeyword))
               .map((customer) => (
                 <TableRow
                   key={customer.id}

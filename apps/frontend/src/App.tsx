@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/Layout'
 import './App.css'
 
-const DashboardPage = React.lazy(() => import('@/pages/dashboard/DashboardPage'))
-const CustomersPage = React.lazy(() => import('@/pages/customer/CustomersPage'))
+const DashboardPage = React.lazy(() => import('@/domains/purchase/pages/DashboardPage'))
+const CustomersPage = React.lazy(() => import('@/domains/customer/pages/CustomersPage'))
 
 export default function App() {
   return (

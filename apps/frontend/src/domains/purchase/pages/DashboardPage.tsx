@@ -1,9 +1,10 @@
-import { Button } from '@/components/ui/button'
-import { purchaseQueryKey } from '@/queryKey/purchase'
+import { FrequencyBarChart } from '@/domains/purchase/components/FrequencyBarChart'
+import { purchaseQueryKey } from '@/domains/purchase/queryKeys'
 import { useQuery } from '@tanstack/react-query'
 import { isBefore, isSameDay, parse } from 'date-fns'
 import { useMemo, useState } from 'react'
-import { FrequencyBarChart } from './components/FrequencyBarChart'
+
+const DATE_FORMAT = 'yyyy-MM-dd'
 
 export default function DashboardPage() {
   const [from, setFrom] = useState<string>('2024-07-01')
@@ -12,9 +13,8 @@ export default function DashboardPage() {
   const enabledStatus = useMemo(() => {
     if (!from || !to) return 'EMPTY'
 
-    const parsedFrom = parse(from, 'yyyy-MM-dd', new Date())
-    const parsedTo = parse(to, 'yyyy-MM-dd', new Date())
-    console.log(parsedFrom, parsedTo)
+    const parsedFrom = parse(from, DATE_FORMAT, new Date())
+    const parsedTo = parse(to, DATE_FORMAT, new Date())
 
     if (isSameDay(parsedFrom, parsedTo) || isBefore(parsedFrom, parsedTo)) {
       return 'VALID'
@@ -22,7 +22,8 @@ export default function DashboardPage() {
 
     return 'INVALID'
   }, [from, to])
-  const { data, isLoading, isError, refetch, isFetching } = useQuery({
+
+  const { data, isLoading, isError } = useQuery({
     ...purchaseQueryKey.frequency({ from, to }),
     enabled: enabledStatus === 'VALID',
   })
@@ -45,9 +46,6 @@ export default function DashboardPage() {
           <label className="text-sm text-muted-foreground">To</label>
           <input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="border rounded px-2 py-1" />
         </div>
-        <Button className="border px-3 py-1 rounded" variant="outline" onClick={() => refetch()} disabled={isFetching}>
-          조회
-        </Button>
       </div>
 
       {(() => {
