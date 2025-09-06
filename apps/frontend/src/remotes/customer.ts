@@ -1,12 +1,16 @@
-import { Customer, Purchase } from '@/models'
-import { apiClient } from '@/utils/apiClient'
+import { Customer, CustomerPurchase } from '@/models'
+import { apiClient } from '@/lib/apiClient'
 
-export const getCustomers = async () => {
-  const response = await apiClient.get<Customer[]>('/api/customers')
-  return response.json()
+export type GetCustomersParams = { name?: string; sortBy?: 'asc' | 'desc' }
+
+export const getCustomers = async (params?: GetCustomersParams) => {
+  const response = await apiClient.get<Customer[]>('api/customers', {
+    searchParams: params,
+  })
+  return await response.json()
 }
 
-export const getCustomerPurchases = async (id: string) => {
-  const response = await apiClient.get<Purchase[]>(`/api/customers/${id}/purchases`)
-  return response.json()
+export const getCustomerPurchases = async (id: number) => {
+  const response = await apiClient.get<CustomerPurchase[]>(`api/customers/${id}/purchases`)
+  return await response.json()
 }

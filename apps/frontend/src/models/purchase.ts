@@ -1,7 +1,4 @@
-export interface Purchase {
-  id: number
-  productId: number
-  customerId: number
-  quantity: number
-  date: string
+export interface PurchaseFrequency {
+  range: `${number} - ${number}`
+  count: number
 }
