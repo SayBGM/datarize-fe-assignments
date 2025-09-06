@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { customerQueryKey } from '@/queryKey'
+import { customerQueryKey } from '@/queryKey/customer'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { useState } from 'react'
@@ -10,6 +10,7 @@ export default function CustomersPage() {
   const [keyword, setKeyword] = useState('')
   const [sortBy, setSortBy] = useState<'asc' | 'desc'>('desc')
   const openCustomerPurchasesSheet = useCustomerPurchasesSheet()
+
   const { data, isLoading, isError } = useQuery(customerQueryKey.listWithParams({ name: keyword, sortBy }))
 
   return (

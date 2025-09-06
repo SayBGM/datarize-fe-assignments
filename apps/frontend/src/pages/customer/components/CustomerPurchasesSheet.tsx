@@ -1,7 +1,7 @@
 import { Sheet, SheetClose, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Customer } from '@/models'
-import { customerQueryKey } from '@/queryKey'
+import { Customer } from '@/models/customer'
+import { customerQueryKey } from '@/queryKey/customer'
 import { useQuery } from '@tanstack/react-query'
 
 interface Props {

@@ -1,4 +1,4 @@
-import { Customer, CustomerPurchase } from '@/models'
+import { Customer, CustomerPurchase } from '@/models/customer'
 import { apiClient } from '@/lib/apiClient'
 
 export type GetCustomersParams = { name?: string; sortBy?: 'asc' | 'desc' }

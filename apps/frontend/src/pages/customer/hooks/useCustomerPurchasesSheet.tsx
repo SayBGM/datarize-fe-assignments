@@ -1,4 +1,4 @@
-import { Customer } from '@/models'
+import { Customer } from '@/models/customer'
 import { overlay } from 'overlay-kit'
 import { useCallback } from 'react'
 import { CustomerPurchasesSheet } from '../components/CustomerPurchasesSheet'

@@ -1,4 +1,4 @@
-import { PurchaseFrequency } from '@/models'
+import { PurchaseFrequency } from '@/models/purchase'
 import { apiClient } from '@/lib/apiClient'
 
 export type GetPurchaseFrequencyParams = { from?: string; to?: string }

@@ -1,4 +1,4 @@
-import { PurchaseFrequency } from '@/models'
+import { PurchaseFrequency } from '@/models/purchase'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 export function FrequencyBarChart({ data }: { data: PurchaseFrequency[] }) {

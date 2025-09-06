@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { purchaseQueryKey } from '@/queryKey'
+import { purchaseQueryKey } from '@/queryKey/purchase'
 import { useQuery } from '@tanstack/react-query'
 import { isBefore, isSameDay, parse } from 'date-fns'
 import { useMemo, useState } from 'react'
