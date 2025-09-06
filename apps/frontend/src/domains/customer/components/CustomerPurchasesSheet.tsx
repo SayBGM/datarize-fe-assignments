@@ -29,7 +29,7 @@ export const CustomerPurchasesSheet = ({ selectedCustomer, open, close }: Props)
         <div className="mt-4 text-sm text-muted-foreground">
           <div className="px-4">
             <div className="font-medium mb-2">{selectedCustomer.name}</div>
-            <div>총 구매 횟수: {selectedCustomer.count}</div>
+            <div>총 구매 수량: {selectedCustomer.count}</div>
             <div>총 구매 금액: {selectedCustomer.totalAmount.toLocaleString()}원</div>
             <div className="mt-4" />
             {isLoading && <div>구매 내역 불러오는 중…</div>}

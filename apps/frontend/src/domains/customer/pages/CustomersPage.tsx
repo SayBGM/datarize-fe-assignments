@@ -3,21 +3,27 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { customerQueryKey } from '@/domains/customer/queryKeys'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowDown, ArrowUp } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useCustomerPurchasesSheet } from '@/domains/customer/hooks/useCustomerPurchasesSheet'
 import { useDebounce } from '@/lib/useDebounce'
+import { useSearchParams } from 'react-router-dom'
 
 const DEBOUNCE_MS = 300
+const DEFAULT_SORT: 'asc' | 'desc' = 'desc'
 
 export default function CustomersPage() {
-  const [keyword, setKeyword] = useState('')
-  const [sortBy, setSortBy] = useState<'asc' | 'desc'>('desc')
-  const debouncedKeyword = useDebounce(keyword, DEBOUNCE_MS)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const rawName = searchParams.get('name') ?? ''
+  const sortParam = searchParams.get('sort')
+  const sortBy: 'asc' | 'desc' = sortParam === 'asc' ? 'asc' : DEFAULT_SORT
+  const debouncedName = useDebounce(rawName, DEBOUNCE_MS)
   const openCustomerPurchasesSheet = useCustomerPurchasesSheet()
 
-  const loweredKeyword = useMemo(() => debouncedKeyword.trim().toLowerCase(), [debouncedKeyword])
+  const loweredKeyword = useMemo(() => debouncedName.trim().toLowerCase(), [debouncedName])
 
-  const { data, isLoading, isError } = useQuery(customerQueryKey.listWithParams({ name: debouncedKeyword, sortBy }))
+  const { data, isLoading, isError } = useQuery(
+    customerQueryKey.listWithParams({ name: debouncedName || undefined, sortBy }),
+  )
 
   return (
     <section className="w-full">
@@ -26,8 +32,19 @@ export default function CustomersPage() {
       <div className="mb-4 flex gap-2 items-center">
         <Input
           placeholder="이름 검색"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
+          defaultValue={rawName}
+          onChange={(e) => {
+            const value = e.target.value
+            setSearchParams((prev) => {
+              const next = new URLSearchParams(prev)
+              if (value) {
+                next.set('name', value)
+              } else {
+                next.delete('name')
+              }
+              return next
+            })
+          }}
           className="max-w-xs"
         />
       </div>
@@ -43,7 +60,14 @@ export default function CustomersPage() {
               <TableHead>총 구매 횟수</TableHead>
               <TableHead
                 className="flex items-center gap-2 cursor-pointer"
-                onClick={() => setSortBy((prev) => (prev === 'asc' ? 'desc' : 'asc'))}
+                onClick={() => {
+                  const nextSort: 'asc' | 'desc' = sortBy === 'asc' ? 'desc' : 'asc'
+                  setSearchParams((prev) => {
+                    const next = new URLSearchParams(prev)
+                    next.set('sort', nextSort)
+                    return next
+                  })
+                }}
               >
                 총 구매 금액 {sortBy === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />}
               </TableHead>
